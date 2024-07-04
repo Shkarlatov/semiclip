@@ -25,7 +25,6 @@
 #define DEBUG 1
 #endif
 
-#ifdef _WIN32
 // Silence certain warnings
 #pragma warning(disable : 4244)		// int or float down-conversion
 #pragma warning(disable : 4305)		// int or float data truncation
@@ -33,27 +32,37 @@
 #pragma warning(disable : 4514)		// unreferenced inline function removed
 #pragma warning(disable : 4100)		// unreferenced formal parameter
 
+#include "archtypes.h"     // DAL
+
 // Prevent tons of unused windows definitions
+#ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #define NOWINRES
 #define NOSERVICE
 #define NOMCX
 #define NOIME
+#include "winsani_in.h"
 #include "windows.h"
+#include "winsani_out.h"
 #else // _WIN32
+#ifndef TRUE
 #define FALSE 0
 #define TRUE (!FALSE)
-typedef unsigned long ULONG;
+#endif //TRUE
+typedef uint32 ULONG;
 typedef unsigned char BYTE;
 typedef int BOOL;
+#ifndef MAX_PATH
 #define MAX_PATH PATH_MAX
+#endif // MAX_PATH
 #include <limits.h>
 #include <stdarg.h>
+#include <string.h> // memset 
 #ifndef min
-#define min(a,b)  (((a) < (b)) ? (a) : (b))
+//#define min(a,b)  (((a) < (b)) ? (a) : (b))
 #endif
 #ifndef max
-#define max(a,b)  (((a) > (b)) ? (a) : (b))
+//#define max(a,b)  (((a) > (b)) ? (a) : (b))
 #define _vsnprintf(a,b,c,d) vsnprintf(a,b,c,d)
 #endif
 #endif //_WIN32
@@ -64,8 +73,8 @@ typedef int BOOL;
 #include "math.h"
 
 // Header file containing definition of globalvars_t and entvars_t
-typedef int	func_t;					//
-typedef int	string_t;				// from engine's pr_comp.h;
+typedef unsigned int func_t;					//
+typedef unsigned int string_t;				// from engine's pr_comp.h;
 typedef float vec_t;				// needed before including progdefs.h
 
 // Vector class

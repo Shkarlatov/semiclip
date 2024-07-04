@@ -8,9 +8,7 @@
 #if !defined EDICT_H
 #define EDICT_H
 #ifdef _WIN32
-#ifndef __MINGW32__
 #pragma once
-#endif /* not __MINGW32__ */
 #endif
 #define	MAX_ENT_LEAFS	48
 
@@ -18,11 +16,11 @@
 
 struct edict_s
 {
-	qboolean	free;				// +4
-	int			serialnumber;		// +4
-	link_t		area;				// +8 linked to a division node or leaf
+	qboolean	free;
+	int			serialnumber;
+	link_t		area;				// linked to a division node or leaf
 	
-	int			headnode;			// -1 to use normal leaf check || *((int *)pthis + 4)
+	int			headnode;			// -1 to use normal leaf check
 	int			num_leafs;
 	short		leafnums[MAX_ENT_LEAFS];
 

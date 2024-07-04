@@ -12,10 +12,11 @@
 *   without written permission from Valve LLC.
 *
 ****/
+#include "archtypes.h"     // DAL
+
 //
 // Misc utility code
 //
-#include <string.h>
 #ifndef ACTIVITY_H
 #include "activity.h"
 #endif
@@ -28,8 +29,8 @@ inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin, ent
 extern globalvars_t				*gpGlobals;
 
 // Use this instead of ALLOC_STRING on constant strings
-#define STRING(offset)		(const char *)(gpGlobals->pStringBase + (int)offset)
-#define MAKE_STRING(str)	((int)str - (int)STRING(0))
+#define STRING(offset)		((const char *)(gpGlobals->pStringBase + (unsigned int)(offset)))
+#define MAKE_STRING(str)	((uint64)(str) - (uint64)(STRING(0)))
 
 inline edict_t *FIND_ENTITY_BY_CLASSNAME(edict_t *entStart, const char *pszName) 
 {
@@ -79,19 +80,23 @@ typedef int BOOL;
 #define M_PI			3.14159265358979323846
 
 // Keeps clutter down a bit, when declaring external entity/global method prototypes
-#define DECLARE_GLOBAL_METHOD(MethodName)  extern void DLLEXPORT MethodName( void )
-#define GLOBAL_METHOD(funcname)					void DLLEXPORT funcname(void)
+#define DECLARE_GLOBAL_METHOD(MethodName)  extern void UTIL_DLLEXPORT MethodName( void )
+#define GLOBAL_METHOD(funcname)					void UTIL_DLLEXPORT funcname(void)
+
+#ifndef UTIL_DLLEXPORT
+#ifdef _WIN32
+#define UTIL_DLLEXPORT _declspec( dllexport )
+#else
+#define UTIL_DLLEXPORT __attribute__ ((visibility("default")))
+#endif
+#endif
 
 // This is the glue that hooks .MAP entity class names to our CPP classes
 // The _declspec forces them to be exported by name so we can do a lookup with GetProcAddress()
 // The function is used to intialize / allocate the object for the entity
-#ifdef _WIN32
 #define LINK_ENTITY_TO_CLASS(mapClassName,DLLClassName) \
-	extern "C" _declspec( dllexport ) void mapClassName( entvars_t *pev ); \
+	extern "C" UTIL_DLLEXPORT void mapClassName( entvars_t *pev ); \
 	void mapClassName( entvars_t *pev ) { GetClassPtr( (DLLClassName *)pev ); }
-#else
-#define LINK_ENTITY_TO_CLASS(mapClassName,DLLClassName) extern "C" void mapClassName( entvars_t *pev ); void mapClassName( entvars_t *pev ) { GetClassPtr( (DLLClassName *)pev ); }
-#endif
 
 
 //
@@ -108,7 +113,7 @@ inline edict_t *ENT(EOFFSET eoffset)			{ return (*g_engfuncs.pfnPEntityOfEntOffs
 inline EOFFSET OFFSET(EOFFSET eoffset)			{ return eoffset; }
 inline EOFFSET OFFSET(const edict_t *pent)	
 { 
-#ifdef _DEBUG
+#if _DEBUG
 	if ( !pent )
 		ALERT( at_error, "Bad ent in OFFSET()\n" );
 #endif
@@ -116,7 +121,7 @@ inline EOFFSET OFFSET(const edict_t *pent)
 }
 inline EOFFSET OFFSET(entvars_t *pev)				
 { 
-#ifdef _DEBUG
+#if _DEBUG
 	if ( !pev )
 		ALERT( at_error, "Bad pev in OFFSET()\n" );
 #endif
@@ -332,6 +337,7 @@ extern char *UTIL_dtos4( int d );
 
 // Writes message to console with timestamp and FragLog header.
 extern void			UTIL_LogPrintf( char *fmt, ... );
+extern void			UTIL_ServerPrintf( const char *fmt, ... );
 
 // Sorta like FInViewCone, but for nonmonsters. 
 extern float UTIL_DotPoints ( const Vector &vecSrc, const Vector &vecCheck, const Vector &vecDir );
