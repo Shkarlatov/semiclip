@@ -47,7 +47,7 @@
 // "hack" our way around that by using a flag METAMOD_CORE which is set 
 // when compiling Metamod proper.
 
-#ifdef METAMOD_CORE
+#ifdef __METAMOD_BUILD__
 #  include "meta_eiface.h"        // HL_enginefuncs_t
 
 // Use a #define to bend the enginefuncs_t type to our HL_enginefuncs_t
@@ -57,7 +57,7 @@
 
 #include <enginecallback.h>		// ALERT, etc
 
-#ifdef METAMOD_CORE
+#ifdef __METAMOD_BUILD__
 #  undef enginefuncs_t
 #endif /* METAMOD_CORE */
 

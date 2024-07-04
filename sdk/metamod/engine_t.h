@@ -39,18 +39,19 @@
 
 #include "eiface.h"             // engfuncs_t, globalvars_t
 #include "engineinfo.h"         // EngineInfo
-
+#include "comp_dep.h"
+#include "osdep.h"	//unlikely, OPEN_ARGS
 
 // Our structure for storing engine references.
 struct engine_t {
-    engine_t();
-    engine_t(const engine_t&);
-    engine_t& operator=(const engine_t&);
+	engine_t() DLLINTERNAL;
+	engine_t(const engine_t&) DLLINTERNAL;
+	engine_t& operator=(const engine_t&) DLLINTERNAL;
 
 	enginefuncs_t	*funcs;			// engine funcs
 	globalvars_t	*globals;		// engine globals
 	enginefuncs_t	*pl_funcs;		// "modified" eng funcs we give to plugins
-    EngineInfo       info;          // some special info elements
+	EngineInfo       info;          // some special info elements
 };
 
 inline engine_t::engine_t() 
@@ -75,7 +76,7 @@ inline engine_t& engine_t::operator=(const engine_t& _rhs)
 }
 
 
-extern engine_t Engine;
+extern engine_t Engine DLLHIDDEN;
 
 #endif /* MM_ENGINE_T_H */
 

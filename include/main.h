@@ -15,8 +15,10 @@
 #define FLOAT_CROUCH			49.9f
 #define MAX_CLIENTS			32
 
+#define macros_abs(x)			(x < 0 ? -1 * x : x)
+
 #define GET_DISTANCE(a,b)		((a - b).Length2D())
-#define GET_COLLIDE(a,b)		(abs(a.z - b.z) < 96 && (a - b).Length2D() < 96)
+#define GET_COLLIDE(a,b)		(macros_abs(a.z - b.z) < 96 && (a - b).Length2D() < 96)
 
 #define NUM_FOR_TEAM_ID(e)		(*((int *)e->pvPrivateData + OFFSET_TEAM_ID))
 

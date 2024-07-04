@@ -1,0 +1,82 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [master]
+    paths-ignore:
+      - '**.md'
+
+  pull_request:
+    types: [opened, reopened, synchronize]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+env:
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+
+jobs:
+  windows:
+    name: 'Windows'
+    runs-on: windows-2019
+
+    env:
+      solution: 'msvc\semiclip.sln'
+      buildPlatform: 'x86'
+      buildRelease: 'Release'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1.3
+
+      - name: Build
+        run: |
+          msbuild ${{ env.solution }} -p:Configuration="${{ env.buildRelease }}" /t:Clean,Build /p:Platform=${{ env.buildPlatform }} /p:PlatformToolset=v140_xp /p:XPDeprecationWarning=false
+
+      - name: Move files
+        run: |
+          mkdir publish\bin\win32
+          move msvc\${{ env.buildRelease }}\semiclip.dll publish\bin\win32\semiclip.dll
+
+      - name: Deploy artifacts
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: win32
+          path: publish/*
+
+
+  linux:
+    name: 'Linux'
+    runs-on: ubuntu-latest
+    container: s1lentq/linux86buildtools:latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          apt-get install -y g++-8 g++-8-multilib
+
+      - name: Build
+        run: |
+          rm -rf build && CC=gcc-8 CXX=g++-8 make -j8
+
+      - name: Move files
+        run: |
+          mkdir -p publish/bin/linux32
+          mv Release/semiclip_mm_i386.so publish/bin/linux32/semiclip_mm_i386.so
+
+      - name: Deploy artifacts
+        uses: actions/upload-artifact@v3.1.1
+        id: upload-job
+        with:
+          name: linux32
+          path: publish/*

@@ -37,7 +37,7 @@
 // This list is now kept in a separate file to facilitate generating the
 // list from game data stored in a convenient db.
 
-#ifdef __amd64__
+#if defined(__x86_64__) || defined(__amd64__)
 #  define MODARCH "_amd64"
 #else
 #  define MODARCH "_i386"
@@ -104,7 +104,7 @@
 	{"rockcrowbar",       "rc"MODARCH".so",           "rc.dll",            "Rocket Crowbar"},
 	{"rspecies",          "hl"MODARCH".so",           "hl.dll",            "Rival Species"},
 	{"scihunt",           "shunt.so",                 "shunt.dll",         "Scientist Hunt"},
-	{"sdmmod",            "sdmmod"MODARCH".so",       "sdmmod.dll",        "Special Death Match"},
+	{"sdm",               "sdmmod"MODARCH".so",       "sdmmod.dll",        "Special Death Match"},
 	{"Ship",              "ship"MODARCH".so",         "ship.dll",          "The Ship"},
 	{"si",                "si"MODARCH".so",           "si.dll",            "Science & Industry"},
 	{"snow",              "snow"MODARCH".so",         "snow.dll",          "Snow-War"},

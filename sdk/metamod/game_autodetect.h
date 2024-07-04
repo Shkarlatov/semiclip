@@ -1,13 +1,12 @@
 // vi: set ts=4 sw=4 :
 // vim: set tw=75 :
 
-// vers_meta.h - version info, intended to be common among DLLs distributed
-// with metamod.
+// autodetect.h - GameDLL search and autodetection.
 
 /*
- * Copyright (c) 2001-2006 Will Day <willday@hpgx.net>
+ * Copyright (c) 2004-2006 Jussi Kivilinna
  *
- *    This file is part of Metamod.
+ *    This file is part of "Metamod All-Mod-Support"-patch for Metamod.
  *
  *    Metamod is free software; you can redistribute it and/or modify it
  *    under the terms of the GNU General Public License as published by the
@@ -35,27 +34,10 @@
  *
  */
 
-#ifndef VERS_META_H
-#define VERS_META_H
+#ifndef GAME_AUTODETECT_H
+#define GAME_AUTODETECT_H
 
-#ifndef OPT_TYPE
-	#define OPT_TYPE	"default"
-#endif /* not OPT_TYPE */
+#include "metamod.h"
+const char * DLLINTERNAL autodetect_gamedll(const gamedll_t *gamedll, const char *knownfn);
 
-
-#define VDATE 			"2007/08/12"
-#define VPATCH_COPYRIGHT_YEAR   "2007"
-#define VMETA_VERSION		"1.19"
-
-#define VPATCH_NAME		"Metamod-P (mm-p)"
-#define VPATCH_IVERSION		32
-#define VPATCH_VERSION		"32"
-#define VPATCH_AUTHOR		"Jussi Kivilinna"
-#define VPATCH_WEBSITE		"http://metamod-p.sourceforge.net/"
-
-#define VVERSION		VMETA_VERSION "p" VPATCH_VERSION
-#define RC_VERS_DWORD		1,19,0,VPATCH_IVERSION	// Version Windows DLL Resources in res_meta.rc
-
-
-
-#endif /* VERS_META_H */
+#endif /*GAME_AUTODETECT_H*/

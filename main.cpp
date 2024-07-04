@@ -37,7 +37,7 @@ int OnMetaAttach()
 	}
 	return 0;
 }
-static uint16_t FixedUnsigned16(float fValue,float fScale)
+uint16_t FixedUnsigned16(float fValue,float fScale)
 {
 	int output = (int)(fValue * fScale);
 
@@ -373,7 +373,7 @@ static bool allowDontSolid(playermove_t *pmove,edict_t *pHost,int host,int j)
 	if(semiclipData.crouch && a->solid[ent])
 	{
 		//fDiff = abs(a->diff[ent]);//abs(hostOrigin.z - entOrigin.z);
-		fDiff = abs(hostOrigin.z - entOrigin.z);
+		fDiff = macros_abs(hostOrigin.z - entOrigin.z);
 
 		if(fDiff < FLOAT_CROUCH && a->crouch[ent] && e->crouch[host])
 		{
