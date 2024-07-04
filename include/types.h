@@ -18,9 +18,9 @@
 		typedef unsigned __int32 uintp_t;
 	#endif
 
-	#ifndef int8_t
-		typedef __int8 int8_t;
-	#endif
+	// #ifndef int8_t
+	// 	typedef __int8 int8_t;
+	// #endif
 
 	#ifndef uint8_t
 		typedef unsigned __int8 uint8_t;

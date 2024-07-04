@@ -500,7 +500,7 @@ void ClientPutInServer_Post(edict_t *pEdict)
 
 	RETURN_META(MRES_IGNORED);
 }
-void AlertMessage(ALERT_TYPE atype,char *fmt,...)
+void AlertMessage(ALERT_TYPE atype,const char *fmt,...)
 {
 	if(atype != at_logged)
 	{

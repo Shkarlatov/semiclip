@@ -110,7 +110,7 @@ void ClientPutInServer_Post(edict_t *pEdict);
 
 void PM_Move(playermove_t *pmove,int);
 
-void AlertMessage(ALERT_TYPE atype, char *szFmt, ...);
+void AlertMessage(ALERT_TYPE atype,const char *szFmt, ...);
 
 void ServerActivate_Post(edict_t *pEdictList,int edictCount,int clientMax);
 
